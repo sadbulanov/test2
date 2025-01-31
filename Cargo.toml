@@ -4,6 +4,12 @@ version = "0.0.0"
 edition = "2021"
 rust-version = "1.77"
 
+[source.crates-io]
+replace-with = "vendored"
+
+[source.vendored]
+directory = "third-party/vendor"
+
 [features]
 default = ["tls-ring"]
 jemalloc = ["dep:tikv-jemallocator", "dep:jemalloc_pprof"]

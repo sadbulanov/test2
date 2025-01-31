@@ -8,11 +8,27 @@ endif
 test:
 	RUST_BACKTRACE=1 cargo test --benches --tests --bins $(FEATURES)
 
+test.cover:
+	RUST_BACKTRACE=1 cargo clippy --message=format=json > cover.out
+
 coverage:
 	FEATURES=$(FEATURES) ./scripts/test-with-coverage.sh 
 
+cargo.vendor:
+	cargo third-party/vendor
+
+build.release:
+	cargo build --release
+
+build.release.offline:
+	cargo build --release --offline
+
+build.offline :
+	cargo build --offline
+
 build:
 	cargo build $(FEATURES)
+
 
 # Build the inpodserver example
 inpodserver:
@@ -37,6 +53,9 @@ check:
 
 cve-check:
 	cargo deny check advisories $(FEATURES)
+
+cve-check.no-fetch:
+	cargo deny --offline check advisories $(FEATURES)
 
 license-check:
 	cargo deny check licenses $(FEATURES)
